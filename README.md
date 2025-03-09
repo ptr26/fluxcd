@@ -7,4 +7,5 @@ flux bootstrap github \
   --repository=fluxcd \
   --branch=main \
   --path=repositories/infra/clusters/my-cluster \
-  --personal
+  --personal \
+  --private=true
