@@ -9,3 +9,6 @@ flux bootstrap github \
   --path=repositories/infra/clusters/my-cluster \
   --personal \
   --private=true
+
+kubectl -n default apply -f repositories/infra/apps/example-app/git.yaml
+kubectl -n default apply -f repositories/infra/apps/example-app/kustomization.yaml

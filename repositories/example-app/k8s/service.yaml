@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-nginx-app-service
+  name: example-app
 spec:
   selector:
-    app: my-nginx-app
+    app: example-app
   ports:
   - name: http
     port: 8080
