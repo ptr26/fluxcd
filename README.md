@@ -1,9 +1,10 @@
+minikube delete --all
 minikube start -p fluxcd --kubernetes-version=latest
-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
+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
 
 flux bootstrap github \
   --owner=ptr26 \
   --repository=fluxcd \
   --branch=main \
-  --path=clusters/my-cluster \
+  --path=repositories/infra/clusters/my-cluster \
   --personal
