@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example app v 1.0.0</title>
+<style>
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+font-family: Arial, sans-serif;
+background-color: #f4f4f4;
+text-align: center;
+}
+
+.container {
+padding: 20px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+font-size: 24px;
+margin-bottom: 20px;
+}
+
+.datetime {
+font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="title">Example app v 1.0.0</div>
+<div class="datetime" id="datetime"></div>
+</div>
+
+<script>
+function updateDateTime() {
+const now = new Date();
+const date = now.toLocaleDateString();
+const time = now.toLocaleTimeString();
+document.getElementById('datetime').textContent = `${date} ${time}`;
+}
+
+// Update time immediately and then every second
+updateDateTime();
+setInterval(updateDateTime, 1000);
+</script>
+
+</body>
+</html>
