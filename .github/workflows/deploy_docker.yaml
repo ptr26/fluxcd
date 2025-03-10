@@ -36,3 +36,5 @@ jobs:
           context: ./repositories/example-app/src
           push: true
           tags: ${{ secrets.DOCKERHUB_USER }}/example-app:${{ steps.meta.outputs.tags }}
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.DOCKERHUB_PAT }}
