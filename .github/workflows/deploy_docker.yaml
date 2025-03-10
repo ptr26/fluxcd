@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - ./repositories/example-app/src
+      - 'fluxcd/repositories/example-app/src/index.html'
 
 jobs:
   build-docker:
