@@ -36,4 +36,4 @@ jobs:
           context: .
           file: ./repositories/example-app/src/Dockerfile
           push: true
-          tags: ptrz26/example-app:latest
+          tags: ptrz26/example-app:${{ steps.meta.outputs.tags }}
