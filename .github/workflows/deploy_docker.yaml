@@ -39,3 +39,4 @@ jobs:
         with:
           context: ./repositories/example-app/src
           push: true
+          tags: "latest"
