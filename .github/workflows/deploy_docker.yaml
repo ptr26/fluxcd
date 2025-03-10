@@ -39,5 +39,3 @@ jobs:
         with:
           context: ./repositories/example-app/src
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
