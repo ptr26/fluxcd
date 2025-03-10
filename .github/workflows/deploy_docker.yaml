@@ -33,7 +33,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./repositories/example-app/src
+          context: .
+          file: ./repositories/example-app/src/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USER }}/example-app:${{ steps.meta.outputs.tags }}
           secrets: |
