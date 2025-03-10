@@ -20,6 +20,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
+          images: name/app
           tags: |
             # minimal
             type=semver,pattern={{version}}
@@ -36,4 +37,5 @@ jobs:
           context: .
           file: ./repositories/example-app/src/Dockerfile
           push: true
-          tags: ptrz26/example-app:${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
