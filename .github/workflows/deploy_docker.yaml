@@ -31,6 +31,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PAT }}
       - name: Build and push Docker image
-        run: |
-          docker buildx build --load -t ${{ secrets.DOCKERHUB_USER }}/example-app:${{ steps.meta.outputs.tags }} ./repositories/example-app/src
-          docker push ${{ secrets.DOCKERHUB_USER }}/example-app:${{ steps.meta.outputs.tags }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ./repositories/example-app/src
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USER }}/example-app:${{ steps.meta.outputs.tags }}
