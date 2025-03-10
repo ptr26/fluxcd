@@ -2,9 +2,9 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: example-app
-  namespace: default
+  namespace: example-app
 spec:
   interval: 1m0s
   ref:
     branch: main
-  url: https://github.com/ptr26/fluxcd
+  url: https://github.com/ptr26/fluxcd.git

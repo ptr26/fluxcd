@@ -2,10 +2,10 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: example-app
-  namespace: default
+  namespace: example-app
 spec:
   interval: 15m
-  path: "./repositories/example-app/k8s"
+  path: "repositories/example-app/k8s"
   prune: true
   sourceRef:
     kind: GitRepository
