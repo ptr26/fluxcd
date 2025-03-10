@@ -30,14 +30,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PAT }}
-      - name: Build and push Docker image
-        run: |
-          docker build -t ptrz26/example-app:${{ steps.meta.outputs.tags }} ./repositories/example-app/src
-          docker push ptrz26/example-app:${{ steps.meta.outputs.tags }}
-#      - name: Build and push
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./repositories/example-app/src
-#          push: true
-#          tags: ${{ steps.meta.outputs.tags }}
-#          labels: ${{ steps.meta.outputs.labels }}
+#      - name: Build and push Docker image
+#        run: |
+#          docker build -t ptrz26/example-app:${{ steps.meta.outputs.tags }} ./repositories/example-app/src
+#          docker push ptrz26/example-app:${{ steps.meta.outputs.tags }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./repositories/example-app/src
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
