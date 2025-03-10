@@ -14,6 +14,4 @@ flux bootstrap github \
 kubectl -n default apply -f repositories/infra/apps/example-app/git.yaml
 kubectl -n default apply -f repositories/infra/apps/example-app/kustomization.yaml
 
-flux create secret git podinfo-auth \
-    --url=ssh://git@github.com:ptr26/fluxcd \
-    --private-key-file=./identity
+minikube service example-app --url -n example-app --profile fluxcd
