@@ -13,8 +13,6 @@ spec:
       labels:
         app: example-app
     spec:
-      imagePullSecrets:
-        - name: dockerhub-credentials
       containers:
       - name: example-app
         image: ptrz26/example-app
