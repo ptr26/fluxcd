@@ -24,19 +24,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PAT }}
-      - name: Increment value
-        uses: yoichiro/gh-action-increment-value@main
-        with:
-          target_directory: '.github/workflows/'
-          target_file: 'deploy_docker.yaml'
-          prefix: 'tags" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :v'
-          suffix: '"'
-          commit_message: 'Increment the build number to '
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./repositories/example-app/src/Dockerfile
           push: true
-          tags: "v1.0.0"
+          tags: ${GITHUB_SHA::8}
           labels: ${{ steps.meta.outputs.labels }}
