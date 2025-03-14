@@ -32,3 +32,6 @@ jobs:
           push: true
           tags: ptrz26/example-app:${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Update k8s deployment YAML
+        run: |
+          sed -i "s|image: ptrz26/example-app:.*|image: ptrz26/example-app:${{ env.SHORT_SHA }}|" repositories/example-app/k8s/deployment.yaml
