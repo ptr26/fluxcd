@@ -21,6 +21,9 @@ jobs:
         with:
           username: "ptrz26"
           password: ${{ secrets.DOCKERHUB_PAT }}
+      - name: Calculate short SHA
+        run: |
+          echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
