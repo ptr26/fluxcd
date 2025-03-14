@@ -29,7 +29,7 @@ jobs:
         with:
           target_directory: '.github/workflows/'
           target_file: 'deploy_docker.yaml'
-          prefix: 'tags" :vNaN" :vNaN" :vNaN" :v'
+          prefix: 'tags" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :vNaN" :v'
           suffix: '"'
           commit_message: 'Increment the build number to '
       - name: Build and push Docker image
