@@ -70,7 +70,7 @@ jobs:
         run: |
           git config --local user.name "GitHub Action"
           git config --local user.email "github-action@github.com"
-          git add repositories/example-app/k8s/deployment.yaml
+          git add repositories/guest-book/k8s/${{ env.IMAGE }}.yaml
           git commit -m "Update deployment.yaml with new image tag"
           git remote set-url origin https://x-access-token:${{ secrets.PAT }}@github.com/${GITHUB_REPOSITORY}.git
           git push origin main
