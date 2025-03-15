@@ -21,10 +21,10 @@ jobs:
         id: find-changed-folders
         run: |
           previous_commit_hash=$(git log --format=%H --skip=1 -n 1)
-          changed_folders=$(git diff $previous_commit_hash --name-only | sed 's/\/[^\/]*$//' | sort -u)
+          changed_folders=$(git diff $previous_commit_hash --name-only -- './repositories/guest-book/src/' './repositories/example-app/src/' | sed 's/\/[^\/]*$//' | sort -u)
           echo "Changed folders from previous commit:"
           echo "$changed_folders"
-          echo "::set-output name=changed_folders::$changed_folders"
+          echo "::set-output name=changed_folders::[\"${changed_folders// /\",\"}\"]"
 
   build-docker:
     runs-on: ubuntu-latest
