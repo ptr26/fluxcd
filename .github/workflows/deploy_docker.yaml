@@ -21,7 +21,7 @@ jobs:
         id: find-changed-folders
         run: |
           previous_commit_hash=$(git log --format=%H --skip=1 -n 1)
-          changed_folders=$(git diff $previous_commit_hash --name-only -- './repositories/guest-book/src/' './repositories/example-app/src/' | sed 's/\/[^\/]*$//' | sort -u)
+          changed_folders=$(git diff $previous_commit_hash --name-only -- './repositories/guest-book/src/' | sed 's/\/[^\/]*$//' | sort -u)
           echo "Changed folders from previous commit:"
           echo "$changed_folders"
           echo "::set-output name=changed_folders::[\"${changed_folders// /\",\"}\"]"
@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }} # If using a PAT
+          token: ${{ secrets.PAT }}
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -52,7 +52,7 @@ jobs:
           second_string=$(echo "$output" | cut -d '/' -f 2)
           last_string=$(echo "$output" | rev | cut -d '/' -f 1 | rev)
           concatenated_result="${second_string}-${last_string}"
-          echo "Concatenated result: $concatenated_result"
+          echo "IMAGE=$last_string" >> $GITHUB_ENV
           echo "CONCATENATED_RESULT=$concatenated_result" >> $GITHUB_ENV
 
       - name: Build and push Docker image
@@ -65,7 +65,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
       - name: Update k8s deployment YAML
         run: |
-          sed -i "s|image: ptrz26/example-app:.*|image: ptrz26/example-app:${{ env.SHORT_SHA }}|" repositories/example-app/k8s/deployment.yaml
+          sed -i "s|image: ptrz26/${{ env.CONCATENATED_RESULT }}:.*|image: ptrz26/${{ env.CONCATENATED_RESULT }}:${{ env.SHORT_SHA }}|" repositories/guest-book/k8s/${{ env.IMAGE }}.yaml
       - name: Commit and push changes
         run: |
           git config --local user.name "GitHub Action"
