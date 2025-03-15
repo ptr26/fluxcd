@@ -46,6 +46,13 @@ jobs:
       - name: Calculate short SHA
         run: |
           echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+      - name: Process Changed Folders
+        run: |
+          output=${{ matrix.folder }}
+          second_string=$(echo "$output" | cut -d '/' -f 2)
+          last_string=$(echo "$output" | rev | cut -d '/' -f 1 | rev)
+          concatenated_result="${second_string}-${last_string}"
+          echo "Concatenated result: $concatenated_result"
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
