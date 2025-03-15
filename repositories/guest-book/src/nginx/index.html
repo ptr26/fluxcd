@@ -176,6 +176,14 @@
             border: 1px solid #eaeaea;
         }
 
+        /* Transposed Grid Styles */
+        .guests-grid.transposed {
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(5, auto);
+            overflow-x: auto;
+        }
+
         .grid-header, .grid-item {
             padding: 12px 15px;
             text-align: left;
@@ -188,6 +196,12 @@
             color: var(--secondary-color);
             position: sticky;
             top: 0;
+            z-index: 1;
+        }
+
+        .guests-grid.transposed .grid-header {
+            position: sticky;
+            left: 0;
             z-index: 1;
         }
 
@@ -273,32 +287,56 @@
         }
 
         @media (max-width: 576px) {
-            .guests-grid {
+            .guests-grid:not(.transposed) {
                 grid-template-columns: 1fr;
                 border: none;
             }
 
-            .grid-header {
+            .guests-grid:not(.transposed) .grid-header {
                 display: none;
             }
 
-            .grid-row {
+            .guests-grid:not(.transposed) .grid-row {
                 margin-bottom: 15px;
                 border: 1px solid #eaeaea;
                 border-radius: 4px;
                 overflow: hidden;
             }
 
-            .grid-item {
+            .guests-grid:not(.transposed) .grid-item {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 padding: 8px 12px;
             }
 
-            .grid-item::before {
+            .guests-grid:not(.transposed) .grid-item::before {
                 content: attr(data-label);
                 font-weight: 600;
                 margin-right: 10px;
+            }
+
+            .guests-grid.transposed {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .guests-grid.transposed .property-row {
+                display: flex;
+                border-bottom: 1px solid #eaeaea;
+            }
+
+            .guests-grid.transposed .grid-header,
+            .guests-grid.transposed .grid-item {
+                min-width: 120px;
+                flex: 1;
+            }
+
+            .guests-grid.transposed .grid-header {
+                min-width: 100px;
+                position: sticky;
+                left: 0;
+                background-color: #f2f6fc;
             }
         }
     </style>
@@ -414,15 +452,19 @@
                     if (guests.length === 0) {
                         guestsDiv.innerHTML = '<p class="empty-list">No guest feedback yet. Be the first to leave a review!</p>';
                     } else {
-                        let guestHTML = `
-                            <div class="guests-grid">
-                                <div class="grid-header">ID</div>
-                                <div class="grid-header">Name</div>
-                                <div class="grid-header">Stay Duration</div>
-                                <div class="grid-header">Rating</div>
-                                <div class="grid-header">Date</div>
+                        // Start with transposed grid - rows are properties, columns are guests
+                        let guestHTML = `<div class="guests-grid transposed">`;
+
+                        // Add property headers as the first column
+                        guestHTML += `
+                            <div class="grid-header">ID</div>
+                            <div class="grid-header">Name</div>
+                            <div class="grid-header">Stay Duration</div>
+                            <div class="grid-header">Rating</div>
+                            <div class="grid-header">Date</div>
                         `;
 
+                        // Add guest data (each guest becomes a column)
                         guests.forEach((guest, index) => {
                             // Generate star rating HTML
                             let starsHTML = '';
@@ -434,23 +476,21 @@
                                 }
                             }
 
-                            // Create a fake date since we don't have it in the data
+                            // Create a fake date
                             const today = new Date();
                             const randomDaysAgo = Math.floor(Math.random() * 30) + 1;
                             const fakeDate = new Date(today);
                             fakeDate.setDate(today.getDate() - randomDaysAgo);
                             const formattedDate = fakeDate.toLocaleDateString();
 
-                            const rowClass = index === 0 ? 'grid-row new-entry' : 'grid-row';
+                            const itemClass = index === 0 ? 'grid-item new-entry' : 'grid-item';
 
                             guestHTML += `
-                                <div class="${rowClass}">
-                                    <div class="grid-item" data-label="ID">${guest[0]}</div>
-                                    <div class="grid-item" data-label="Name">${guest[1]} ${guest[2]}</div>
-                                    <div class="grid-item" data-label="Stay Duration">${guest[3]} days</div>
-                                    <div class="grid-item stars" data-label="Rating">${starsHTML}</div>
-                                    <div class="grid-item" data-label="Date">${formattedDate}</div>
-                                </div>
+                                <div class="${itemClass}" data-label="ID">${guest[0]}</div>
+                                <div class="${itemClass}" data-label="Name">${guest[1]} ${guest[2]}</div>
+                                <div class="${itemClass}" data-label="Stay Duration">${guest[3]} days</div>
+                                <div class="${itemClass} stars" data-label="Rating">${starsHTML}</div>
+                                <div class="${itemClass}" data-label="Date">${formattedDate}</div>
                             `;
                         });
 
