@@ -9,6 +9,8 @@ on:
 jobs:
   changed-folders:
     runs-on: ubuntu-latest
+    outputs:
+      changed_folders: ${{ steps.find-changed-folders.outputs.changed_folders }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -16,15 +18,21 @@ jobs:
           fetch-depth: 0
 
       - name: Find Changed Folders
+        id: find-changed-folders
         run: |
           previous_commit_hash=$(git log --format=%H --skip=1 -n 1)
           changed_folders=$(git diff $previous_commit_hash --name-only | sed 's/\/[^\/]*$//' | sort -u)
           echo "Changed folders from previous commit:"
           echo "$changed_folders"
+          echo "::set-output name=changed_folders::$changed_folders"
 
   build-docker:
     runs-on: ubuntu-latest
     name: Build and push docker image
+    needs: [changed-folders]
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.changed-folders.outputs.changed_folders) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./repositories/example-app/src/Dockerfile
+          file: ${{ matrix.folder }}/Dockerfile
           push: true
           tags: ptrz26/example-app:${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
