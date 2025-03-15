@@ -14,4 +14,7 @@ flux bootstrap github \
 kubectl -n default apply -f repositories/infra/apps/example-app/git.yaml
 kubectl -n default apply -f repositories/infra/apps/example-app/kustomization.yaml
 
+kubectl -n guest-book apply -f repositories/infra/apps/guest-book/git.yaml
+kubectl -n guest-book apply -f repositories/infra/apps/guest-book/kustomization.yaml
+
 minikube service example-app --url -n example-app --profile fluxcd
