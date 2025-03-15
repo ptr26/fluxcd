@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: example-app
-        image: ptrz26/example-app:7e368db
+        image: ptrz26/example-app:54515f7
         ports:
         - containerPort: 80
