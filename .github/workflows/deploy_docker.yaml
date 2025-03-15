@@ -10,6 +10,29 @@ on:
       - 'repositories/example-app/src/index.html'
 
 jobs:
+  changed-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Find Changed Folders
+        id: changed-folders
+        run: |
+          base_branch="main"
+          pr_branch="${{ github.head_ref }}"
+          changed_files=$(git diff --name-only $base_branch $pr_branch)
+          changed_folders=$(echo "$changed_files" | sed 's/\/[^\/]*$//' | sort -u)
+          echo "changed_folders=${changed_folders}" >> $GITHUB_OUTPUT
+
+      - name: Print Changed Folders
+        env:
+          changed_folders: ${{ steps.changed-folders.outputs.changed_folders }}
+        run: |
+          echo "Changed folders from main: ${{ steps.changed-folders.outputs.changed_folders }}"
+
   build-docker:
     runs-on: ubuntu-latest
     name: Build and push docker image

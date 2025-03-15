@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guest Book</h1>
+    <form id="guestForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="surname">Surname:</label><br>
+        <input type="text" id="surname" name="surname"><br>
+        <label for="length_of_stay">Length of Stay:</label><br>
+        <input type="number" id="length_of_stay" name="length_of_stay"><br>
+        <label for="rating">Rating (1-5):</label><br>
+        <input type="number" id="rating" name="rating" min="1" max="5"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div id="guests"></div>
+
+    <script>
+        const form = document.getElementById('guestForm');
+        const guestsDiv = document.getElementById('guests');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            try {
+                const response = await fetch('/add_guest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    console.log('Guest added successfully');
+                    await fetchGuests();
+                } else {
+                    console.error('Failed to add guest');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function fetchGuests() {
+            try {
+                const response = await fetch('/get_guests');
+                if (response.ok) {
+                    const guests = await response.json();
+                    guestsDiv.innerHTML = '';
+                    guests.forEach(guest => {
+                        const guestHTML = `
+                            <p>Guest ID: ${guest[0]}, Name: ${guest[1]}, Surname: ${guest[2]}, Length of Stay: ${guest[3]} days, Rating: ${guest[4]} stars</p>
+                        `;
+                        guestsDiv.insertAdjacentHTML('beforeend', guestHTML);
+                    });
+                } else {
+                    console.error('Failed to fetch guests');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Fetch guests on page load
+        fetchGuests();
+    </script>
+</body>
+</html>
