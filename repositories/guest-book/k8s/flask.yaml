@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask-guestbook
-        image: ptrz26/guest-book-flask:c8d6ea0
+        image: ptrz26/guest-book-flask:c483a1c
         ports:
         - containerPort: 5000
 
