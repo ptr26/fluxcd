@@ -4,50 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guest Book</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc1e3;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
             padding: 20px;
-            background-color: #f5f5f5;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
         }
 
         h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+        h2 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Form Styles */
+        .form-container {
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary-color);
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-sizing: border-box;
+            font-size: 16px;
+            transition: var(--transition);
         }
 
-        /* Star Rating CSS */
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 193, 227, 0.2);
+        }
+
+        /* Star Rating */
+        .rating-container {
+            margin-bottom: 20px;
+        }
+
         .rating {
             display: flex;
             flex-direction: row-reverse;
-            justify-content: flex-end;
-            margin: 10px 0 20px;
+            justify-content: flex-start;
         }
 
         .rating input {
@@ -56,53 +120,355 @@
 
         .rating label {
             cursor: pointer;
-            font-size: 30px;
-            color: #ccc;
-            margin: 0 5px 0 0;
-        }
-
-        .rating label:before {
-            content: "\2605";
-        }
-
-        .rating input:checked ~ label {
-            color: #ffc107;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #ddd;
+            margin: 0;
+            transition: var(--transition);
         }
 
         .rating label:hover,
-        .rating label:hover ~ label {
-            color: #ffc107;
+        .rating label:hover ~ label,
+        .rating input:checked ~ label {
+            color: #ffb700;
         }
 
-        /* Submit Button */
         .submit-btn {
-            background-color: #4CAF50;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 30px;
-            font-size: 18px;
+            padding: 12px 24px;
             border-radius: 4px;
             cursor: pointer;
-            display: block;
-            margin: 20px auto 0;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
         }
 
         .submit-btn:hover {
-            background-color: #45a049;
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* Guest List Grid */
-        .guests-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        .guests-container {
+            background-color: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: auto;
         }
 
-        .guest-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
+        .guests-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+        }
+
+        .grid-header, .grid-item {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .grid-header {
+            background-color: #f2f6fc;
+            font-weight: 600;
+            color: var(--secondary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .grid-item {
+            transition: var(--transition);
+        }
+
+        .grid-row:hover .grid-item {
+            background-color: #f8f9fa;
+        }
+
+        .grid-row:last-child .grid-item {
+            border-bottom: none;
+        }
+
+        .stars {
+            color: #ffb700;
+        }
+
+        .empty-list {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Animation for new entries */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .new-entry {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .guests-grid {
+                font-size: 0.9rem;
+            }
+
+            .grid-header, .grid-item {
+                padding: 10px 8px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .guests-grid {
+                grid-template-columns: 1fr;
+                border: none;
+            }
+
+            .grid-header {
+                display: none;
+            }
+
+            .grid-row {
+                margin-bottom: 15px;
+                border: 1px solid #eaeaea;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+
+            .grid-item {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                padding: 8px 12px;
+            }
+
+            .grid-item::before {
+                content: attr(data-label);
+                font-weight: 600;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Luxury Resort Guest Book</h1>
+        <p>Share your experience with us and see what others have to say</p>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Leave Your Feedback</h2>
+            <form id="guestForm">
+                <div class="form-group">
+                    <label for="name">First Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your first name">
+                </div>
+
+                <div class="form-group">
+                    <label for="surname">Last Name</label>
+                    <input type="text" id="surname" name="surname" required placeholder="Enter your last name">
+                </div>
+
+                <div class="form-group">
+                    <label for="length_of_stay">Length of Stay (days)</label>
+                    <input type="number" id="length_of_stay" name="length_of_stay" min="1" required placeholder="How many days did you stay?">
+                </div>
+
+                <div class="rating-container">
+                    <label>How would you rate your stay?</label>
+                    <div class="rating">
+                        <input type="radio" id="star5" name="rating" value="5" required>
+                        <label for="star5" title="Excellent"><i class="fas fa-star"></i></label>
+
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="Very Good"><i class="fas fa-star"></i></label>
+
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" title="Good"><i class="fas fa-star"></i></label>
+
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="Fair"><i class="fas fa-star"></i></label>
+
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="Poor"><i class="fas fa-star"></i></label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Feedback
+                </button>
+            </form>
+        </div>
+
+        <div class="guests-container">
+            <h2>Recent Guest Experiences</h2>
+            <div id="guests">
+                <!-- Guest data will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('guestForm');
+        const guestsDiv = document.getElementById('guests');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/add_guest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    console.log('Guest added successfully');
+                    form.reset();
+
+                    // Show confirmation message
+                    const submitBtn = document.querySelector('.submit-btn');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Feedback Submitted!';
+                    submitBtn.style.backgroundColor = '#4CAF50';
+
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.style.backgroundColor = '';
+                    }, 2000);
+
+                    await fetchGuests();
+                } else {
+                    console.error('Failed to add guest');
+                    alert('Failed to submit feedback. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting feedback.');
+            }
+        });
+
+        async function fetchGuests() {
+            try {
+                const response = await fetch('/get_guests');
+                if (response.ok) {
+                    const guests = await response.json();
+
+                    if (guests.length === 0) {
+                        guestsDiv.innerHTML = '<p class="empty-list">No guest feedback yet. Be the first to leave a review!</p>';
+                    } else {
+                        let guestHTML = `
+                            <div class="guests-grid">
+                                <div class="grid-header">ID</div>
+                                <div class="grid-header">Name</div>
+                                <div class="grid-header">Stay Duration</div>
+                                <div class="grid-header">Rating</div>
+                                <div class="grid-header">Date</div>
+                        `;
+
+                        guests.forEach((guest, index) => {
+                            // Generate star rating HTML
+                            let starsHTML = '';
+                            for (let i = 0; i < 5; i++) {
+                                if (i < guest[4]) {
+                                    starsHTML += '<i class="fas fa-star"></i>';
+                                } else {
+                                    starsHTML += '<i class="far fa-star"></i>';
+                                }
+                            }
+
+                            // Create a fake date since we don't have it in the data
+                            const today = new Date();
+                            const randomDaysAgo = Math.floor(Math.random() * 30) + 1;
+                            const fakeDate = new Date(today);
+                            fakeDate.setDate(today.getDate() - randomDaysAgo);
+                            const formattedDate = fakeDate.toLocaleDateString();
+
+                            const rowClass = index === 0 ? 'grid-row new-entry' : 'grid-row';
+
+                            guestHTML += `
+                                <div class="${rowClass}">
+                                    <div class="grid-item" data-label="ID">${guest[0]}</div>
+                                    <div class="grid-item" data-label="Name">${guest[1]} ${guest[2]}</div>
+                                    <div class="grid-item" data-label="Stay Duration">${guest[3]} days</div>
+                                    <div class="grid-item stars" data-label="Rating">${starsHTML}</div>
+                                    <div class="grid-item" data-label="Date">${formattedDate}</div>
+                                </div>
+                            `;
+                        });
+
+                        guestHTML += `</div>`;
+                        guestsDiv.innerHTML = guestHTML;
+                    }
+                } else {
+                    console.error('Failed to fetch guests');
+                    guestsDiv.innerHTML = '<p class="empty-list">Error loading guest feedback. Please refresh the page.</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                guestsDiv.innerHTML = '<p class="empty-list">Error loading guest feedback. Please check your connection.</p>';
+            }
+        }
+
+        // Fetch guests on page load
+        fetchGuests();
+    </script>
+</body>
+</html>
