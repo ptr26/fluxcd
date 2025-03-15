@@ -53,6 +53,8 @@ jobs:
           last_string=$(echo "$output" | rev | cut -d '/' -f 1 | rev)
           concatenated_result="${second_string}-${last_string}"
           echo "Concatenated result: $concatenated_result"
+          echo "CONCATENATED_RESULT=$concatenated_result" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
