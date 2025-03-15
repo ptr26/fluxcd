@@ -5,7 +5,7 @@ metadata:
   namespace: guest-book
 spec:
   rules:
-  - host: guestbook.example.com
+  - host: localhost
     http:
       paths:
       - path: /add_guest

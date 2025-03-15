@@ -19,3 +19,7 @@ kubectl -n guest-book apply -f repositories/infra/apps/guest-book/kustomization.
 
 minikube service example-app --url -n example-app --profile fluxcd
 minikube service nginx-guestbook-service --url -n guest-book --profile fluxcd
+
+
+minikube addons enable ingress -p fluxcd
+minikube tunnel -p fluxcd
