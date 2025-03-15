@@ -34,7 +34,7 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             try {
-                const response = await fetch('/add_guest', {
+                const response = await fetch('http://localhost:30080/add_guest', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -54,7 +54,7 @@
 
         async function fetchGuests() {
             try {
-                const response = await fetch('/get_guests');
+                const response = await fetch('http://localhost:30080/get_guests');
                 if (response.ok) {
                     const guests = await response.json();
                     guestsDiv.innerHTML = '';
