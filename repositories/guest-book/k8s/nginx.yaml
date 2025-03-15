@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nginx-guestbook
-        image: ptrz26/guest-book-nginx:886cf07
+        image: ptrz26/guest-book-nginx:060afa8
         ports:
         - containerPort: 80
 
