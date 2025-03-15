@@ -1,10 +1,9 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgres
   namespace: guest-book
 spec:
-  serviceName: "postgres"
   replicas: 1
   selector:
     matchLabels:

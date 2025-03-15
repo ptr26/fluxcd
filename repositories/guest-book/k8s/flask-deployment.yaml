@@ -15,12 +15,9 @@ spec:
     spec:
       containers:
       - name: flask-guestbook
-        image: ptrz26/guest-book-db:50b4534
+        image: yourusername/flask-guestbook
         ports:
         - containerPort: 5000
-        env:
-        - name: DB_HOST
-          value: postgres  # Use the PostgreSQL service name
 
 ---
 apiVersion: v1
@@ -35,4 +32,4 @@ spec:
   - name: http
     port: 80
     targetPort: 5000
-  type: LoadBalancer
+  type: NodePort

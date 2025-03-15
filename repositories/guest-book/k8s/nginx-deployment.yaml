@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nginx-guestbook
-        image: ptrz26/guest-book-nginx:ba66c59
+        image: yourusername/nginx-guestbook
         ports:
         - containerPort: 80
 
@@ -32,4 +32,4 @@ spec:
   - name: http
     port: 80
     targetPort: 80
-  type: LoadBalancer
+  type: NodePort

@@ -4,7 +4,7 @@ import psycopg2
 app = Flask(__name__)
 
 # Database connection settings
-DB_HOST = 'localhost'  # Use 'postgres' if running in Kubernetes
+DB_HOST = 'postgres'  # Use the PostgreSQL service name
 DB_NAME = 'guestbook'
 DB_USER = 'guestbookuser'
 DB_PASSWORD = 'password123'
@@ -61,4 +61,4 @@ def get_guests():
     return jsonify(rows)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
