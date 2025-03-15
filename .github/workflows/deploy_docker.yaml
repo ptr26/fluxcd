@@ -16,19 +16,11 @@ jobs:
           fetch-depth: 0
 
       - name: Find Changed Folders
-        id: changed-folders
         run: |
-          base_branch="main"
-          pr_branch="${{ github.head_ref }}"
-          changed_files=$(git diff --name-only $base_branch $pr_branch)
-          changed_folders=$(echo "$changed_files" | sed 's/\/[^\/]*$//' | sort -u)
-          echo "changed_folders=${changed_folders}" >> $GITHUB_OUTPUT
-
-      - name: Print Changed Folders
-        env:
-          changed_folders: ${{ steps.changed-folders.outputs.changed_folders }}
-        run: |
-          echo "Changed folders from main: ${{ steps.changed-folders.outputs.changed_folders }}"
+          previous_commit_hash=$(git log --format=%H --skip=1 -n 1)
+          changed_folders=$(git diff $previous_commit_hash --name-only | sed 's/\/[^\/]*$//' | sort -u)
+          echo "Changed folders from previous commit:"
+          echo "$changed_folders"
 
   build-docker:
     runs-on: ubuntu-latest
