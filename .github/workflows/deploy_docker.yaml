@@ -13,7 +13,7 @@ jobs:
       changed_folders: ${{ steps.find-changed-folders.outputs.changed_folders }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -24,7 +24,7 @@ jobs:
           changed_folders=$(git diff $previous_commit_hash --name-only -- './repositories/guest-book/src/' | sed 's/\/[^\/]*$//' | sort -u)
           echo "Changed folders from previous commit:"
           echo "$changed_folders"
-          echo "::set-output name=changed_folders::[\"${changed_folders// /\",\"}\"]"
+          echo "changed_folders=[\"${changed_folders// /\",\"}\"]" >> $GITHUB_OUTPUT
 
   build-docker:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: "ptrz26"
           password: ${{ secrets.DOCKERHUB_PAT }}
