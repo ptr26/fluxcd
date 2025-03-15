@@ -61,7 +61,7 @@ jobs:
           context: .
           file: ${{ matrix.folder }}/Dockerfile
           push: true
-          tags: ptrz26/example-app:${{ env.SHORT_SHA }}
+          tags: ptrz26/${{ env.CONCATENATED_RESULT }}:${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Update k8s deployment YAML
         run: |
