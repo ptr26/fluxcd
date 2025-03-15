@@ -1,0 +1,12 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: guest-book
+  namespace: guest-book
+spec:
+  interval: 15m
+  path: "repositories/guest-book/k8s"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: example-app

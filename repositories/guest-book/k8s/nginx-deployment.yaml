@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-guestbook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-guestbook
+  template:
+    metadata:
+      labels:
+        app: nginx-guestbook
+    spec:
+      containers:
+      - name: nginx-guestbook
+        image: ptrz26/guest-book-nginx:ba66c59
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-guestbook-service
+spec:
+  selector:
+    app: nginx-guestbook
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
