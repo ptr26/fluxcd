@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'fluxcd/repositories/example-app/src/index.html'
-      - 'repositories/example-app/src/index.html'
 
 jobs:
   changed-folders:
