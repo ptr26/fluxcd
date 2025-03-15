@@ -34,7 +34,7 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             try {
-                const response = await fetch('http://localhost:30080/add_guest', {
+                const response = await fetch('/add_guest', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -43,6 +43,7 @@
                 });
                 if (response.ok) {
                     console.log('Guest added successfully');
+                    form.reset(); // Clear the form after successful submission
                     await fetchGuests();
                 } else {
                     console.error('Failed to add guest');
@@ -54,16 +55,20 @@
 
         async function fetchGuests() {
             try {
-                const response = await fetch('http://localhost:30080/get_guests');
+                const response = await fetch('/get_guests');
                 if (response.ok) {
                     const guests = await response.json();
-                    guestsDiv.innerHTML = '';
-                    guests.forEach(guest => {
-                        const guestHTML = `
-                            <p>Guest ID: ${guest[0]}, Name: ${guest[1]}, Surname: ${guest[2]}, Length of Stay: ${guest[3]} days, Rating: ${guest[4]} stars</p>
-                        `;
-                        guestsDiv.insertAdjacentHTML('beforeend', guestHTML);
-                    });
+                    guestsDiv.innerHTML = '<h2>Guest List</h2>';
+                    if (guests.length === 0) {
+                        guestsDiv.innerHTML += '<p>No guests yet.</p>';
+                    } else {
+                        guests.forEach(guest => {
+                            const guestHTML = `
+                                <p>Guest ID: ${guest[0]}, Name: ${guest[1]}, Surname: ${guest[2]}, Length of Stay: ${guest[3]} days, Rating: ${guest[4]} stars</p>
+                            `;
+                            guestsDiv.insertAdjacentHTML('beforeend', guestHTML);
+                        });
+                    }
                 } else {
                     console.error('Failed to fetch guests');
                 }
@@ -77,4 +82,3 @@
     </script>
 </body>
 </html>
-
