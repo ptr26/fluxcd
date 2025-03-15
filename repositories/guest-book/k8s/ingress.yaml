@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: guestbook-ingress
+  namespace: guest-book
+spec:
+  rules:
+  - host: guestbook.example.com
+    http:
+      paths:
+      - path: /add_guest
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-guestbook-service
+            port:
+              number: 80
+      - path: /get_guests
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-guestbook-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-guestbook-service
+            port:
+              number: 80

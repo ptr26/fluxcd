@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-guestbook
+  namespace: guest-book
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-guestbook
+  template:
+    metadata:
+      labels:
+        app: flask-guestbook
+    spec:
+      containers:
+      - name: flask-guestbook
+        image: yourusername/flask-guestbook
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          value: postgres  # Use the PostgreSQL service name
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-guestbook-service
+  namespace: guest-book
+spec:
+  selector:
+    app: flask-guestbook
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+  type: LoadBalancer
